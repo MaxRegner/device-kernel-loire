@@ -1,5 +1,5 @@
 /*
- * Linux Socket Filter - Kernel level socket filtering
+ * mrium Socket Filter - Kernel level socket filtering
  *
  * Based on the design of the Berkeley Packet Filter. The new
  * internal format has been designed by PLUMgrid:
@@ -31,17 +31,66 @@
 #include <asm/unaligned.h>
 
 /* Registers */
-#define BPF_R0	regs[BPF_REG_0]
-#define BPF_R1	regs[BPF_REG_1]
-#define BPF_R2	regs[BPF_REG_2]
-#define BPF_R3	regs[BPF_REG_3]
-#define BPF_R4	regs[BPF_REG_4]
-#define BPF_R5	regs[BPF_REG_5]
-#define BPF_R6	regs[BPF_REG_6]
-#define BPF_R7	regs[BPF_REG_7]
-#define BPF_R8	regs[BPF_REG_8]
-#define BPF_R9	regs[BPF_REG_9]
-#define BPF_R10	regs[BPF_REG_10]
+#define BPF_REG_0	0
+#define BPF_REG_1	1
+#define BPF_REG_2	2
+#define BPF_REG_3	3
+#define BPF_REG_4	4
+#define BPF_REG_5	5
+#define BPF_REG_6	6
+#define BPF_REG_7	7
+#define BPF_REG_8	8
+#define BPF_REG_9	9
+#define BPF_REG_10	10
+#define BPF_REG_FP	BPF_REG_10
+#define BPF_REG_11	11
+#define BPF_REG_ARG1	BPF_REG_11
+#define BPF_REG_12	12
+#define BPF_REG_CTX	BPF_REG_12
+#define BPF_REG_13	13
+#define BPF_REG_14	14
+#define BPF_REG_15	15
+#define BPF_REG_16	16
+#define BPF_REG_17	17
+#define BPF_REG_18	18
+#define BPF_REG_19	19
+#define BPF_REG_20	20
+#define BPF_REG_21	21
+#define BPF_REG_22	22
+#define BPF_REG_23	23
+#define BPF_REG_24	24
+#define BPF_REG_25	25
+#define BPF_REG_26	26
+#define BPF_REG_27	27
+#define BPF_REG_28	28
+#define BPF_REG_29	29
+#define BPF_REG_30	30
+#define BPF_REG_31	31
+#define BPF_REG_AX	BPF_REG_10
+#define BPF_REG_SI	BPF_REG_12
+#define BPF_REG_DI	BPF_REG_13
+#define BPF_REG_SP	BPF_REG_14
+#define BPF_REG_BP	BPF_REG_15
+
+#define MAX_BPF_REG	BPF_REG_31
+
+#define BPF_REG_SIZE	4
+#define BPF_REG_SIZE64	8
+
+#define BPF_MEMWORDS	32
+#define BPF_MEMWORDS64	16
+
+#define BPF_MEMWORDS32	(BPF_MEMWORDS - BPF_MEMWORDS64)
+
+#define BPF_MEMWORDS32	(BPF_MEMWORDS - BPF_MEMWORDS64)
+
+#define BPF_MEMWORDS64	16
+
+#define BPF_MEMWORDS32	(BPF_MEMWORDS - BPF_MEMWORDS64)
+
+#define BPF_MEMWORDS64	16
+
+#define BPF_MEMWORDS
 
 /* Named registers */
 #define DST	regs[insn->dst_reg]
@@ -875,6 +924,15 @@ const struct bpf_func_proto bpf_tail_call_proto = {
 	.arg1_type	= ARG_PTR_TO_CTX,
 	.arg2_type	= ARG_CONST_MAP_PTR,
 	.arg3_type	= ARG_ANYTHING,
+};
+
+const struct bpf_func_proto bpf_get_stackid_proto = {
+    .func		= NULL,
+    .gpl_only	= false,
+    .ret_type	= RET_INTEGER,
+    .arg1_type	= ARG_PTR_TO_CTX,
+    .arg2_type	= ARG_ANYTHING,
+    .arg3_type	= ARG_ANYTHING,
 };
 
 /* For classic BPF JITs that don't implement bpf_int_jit_compile(). */
